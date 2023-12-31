@@ -31,8 +31,8 @@ const ListItem = ({ title, description, price, itemImage }) => {
           {/* Yorum yapma formu */}
           {showCommentForm && (
             <div>
-              {/* Yorum yapma formu veya modal */}
-              {/* ... */}
+        
+              {/* ... aaa*/}
             </div>
           )}
         </li>
