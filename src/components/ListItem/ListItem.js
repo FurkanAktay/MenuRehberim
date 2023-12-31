@@ -11,7 +11,7 @@ const ListItem = ({ title, description, price, itemImage }) => {
   
   const handleCommentClick = () => {
     setShowCommentForm(true);
-    navigate('/Comment'); // Yorum yapılacak sayfa rotası buraya gelecek
+    navigate('/Comment'); 
 
   };
 
