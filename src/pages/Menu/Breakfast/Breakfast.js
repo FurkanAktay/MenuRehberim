@@ -5,7 +5,7 @@ import ListItem from "../../../components/ListItem/ListItem";
 
 const Breakfast = ({ id }) => {
   const [menuData, setMenuData] = useState([]);
-  const { id: routeId } = useParams(); // useParams ile id'yi al
+  const { id: routeId } = useParams(); // useParamsssssssssssssssssssss ile id'yi al
 
 
   useEffect(() => {
