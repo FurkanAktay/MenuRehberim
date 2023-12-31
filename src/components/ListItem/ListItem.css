@@ -23,3 +23,13 @@
     border-radius: 50%;
     margin-right: 15px;
 }
+.comment-text {
+    text-decoration: underline;
+    color: #007bff;
+    cursor: pointer;
+  }
+  
+  .comment-text:hover {
+    text-decoration: underline;
+    color: #0056b3;
+  }

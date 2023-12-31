@@ -23,13 +23,13 @@ const menuDataLeft = [
 
 const menuDataRight = [
   {
-    title: "Örnek ürün adı",
+    title: "Örnek ürün adı.",
     description: "Örnek ürün açıklaması.",
     price: 3.0,
     img: image6,
   },
   {
-    title: "Örnek ürün adı",
+    title: "Örnek ürün adı.",
     description: "Örnek ürün açıklaması.",
     price: 38.0,
     img: image5,

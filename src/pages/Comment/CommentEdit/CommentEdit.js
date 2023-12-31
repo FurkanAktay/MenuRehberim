@@ -152,7 +152,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  height: 100vh;
+  height: 50vh;
   padding-top: 50px;
   background-color: #cac6c6;
   max-width: 90%;

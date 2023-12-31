@@ -48,7 +48,7 @@ const LoginForm = () => {
       .then(response => {
         if (response.data === 'Giriş başarılı!') {
           console.log('Kullanıcı girişi başarılı!');
-          navigate('/placeEdit'); // Örnek bir yönlendirme
+          navigate('/', { state: { username: user.userName } }); // Kullanıcı adını ana sayfaya taşıyarak yönlendir
         } else {
           setError('Kullanıcı adı veya şifre hatalı.');
         }

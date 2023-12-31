@@ -129,7 +129,7 @@ const MenuEditForm = ({username}) => {
              </InputContainer>
 
              <InputContainer>
-              <InputLabel>Restoran Profil Fotoğrafı :</InputLabel>
+              <InputLabel>Urun Fotoğrafı :</InputLabel>
               <Input
                 type="file"
                 accept=".jpg, .jpeg, .png" 

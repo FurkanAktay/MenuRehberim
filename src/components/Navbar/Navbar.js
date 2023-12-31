@@ -44,7 +44,7 @@ const Navbar = () => {
           <ul className={click ? "nav-menu active" : "nav-menu"}>
             <li onClick={handleClick}>
               <NavLink className="nav-link" to="/">
-                Home
+                Ana Sayfa
               </NavLink>
             </li>
             <li onClick={handleClick}>
@@ -53,19 +53,8 @@ const Navbar = () => {
               </NavLink>
             </li>
             <li onClick={handleClick}>
-              <NavLink className="nav-link" to="/about">
-                About
-              </NavLink>
-            </li>
-            <li onClick={handleClick}>
-              <NavLink className="nav-link" to="/contact">
-                Contact
-              </NavLink>
-            </li>
-
-            <li onClick={handleClick}>
               <NavLink className="nav-link" to="/placeedit">
-                Place Edit
+                Restoran Edit
               </NavLink>
             </li>
 
@@ -76,8 +65,14 @@ const Navbar = () => {
             </li>
 
             <li onClick={handleClick}>
+              <NavLink className="nav-link" to="/comment">
+                Yorumlar
+              </NavLink>
+            </li>
+
+            <li onClick={handleClick}>
             <NavLink className="nav-link" to="/login">
-                Login
+                Giriş Yap
               </NavLink>
             </li>
           </ul>

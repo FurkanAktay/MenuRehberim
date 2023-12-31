@@ -73,6 +73,7 @@ const commentStyle = {
   const headerPrimary = {
     textAlign: 'center',
     marginBottom:'40px',
+    color: '#c10e18',
   };
 
 
