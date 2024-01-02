@@ -3,16 +3,13 @@ import { useNavigate } from 'react-router-dom';
 
 import './ListItem.css'
 
-
-const ListItem = ({ title, description, price, itemImage }) => {
+const ListItem = ({ Itemid, title, description, price, itemImage }) => {
   const [showCommentForm, setShowCommentForm] = useState(false);
   const navigate = useNavigate();
 
-  
   const handleCommentClick = () => {
     setShowCommentForm(true);
-    navigate('/Comment'); 
-
+    navigate(`/Comment/${Itemid}`); // Yorum yap butonuna tıklandığında ilgili ürünün id'si Comment sayfasına iletiliyor.
   };
 
   return (
@@ -31,8 +28,7 @@ const ListItem = ({ title, description, price, itemImage }) => {
           {/* Yorum yapma formu */}
           {showCommentForm && (
             <div>
-        
-              {/* ... aakkkka*/}
+              {/* Yorum formu */}
             </div>
           )}
         </li>

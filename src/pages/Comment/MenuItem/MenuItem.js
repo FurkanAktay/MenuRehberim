@@ -1,33 +1,45 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ListItem from "../../../components/ListItem/ListItem";
+import { useParams } from "react-router-dom";
 import "./MenuItem.css";
 
-import image1 from "../../../assets/burger.jpg";
+const MenuItem = ({ id }) => {
+  const [selectedItem, setSelectedItem] = useState(null);
 
-const menuData = [
-  {
-    title: "Yorum yapılacak ürün",
-    description: "açıklaması",
-    price: "7.50",
-    img: image1,
-  },
-];
+  useEffect(() => {
+    const fetchItem = async () => {
+      try {
+        if (id) {
+          const response = await fetch(`http://localhost:8080/api/ItemPull/${id}`);
+          if (response.ok) {
+            const data = await response.json();
+            setSelectedItem(data);
+          } else {
+            console.error('Error: Data could not be fetched');
+          }
+        }
+      } catch (error) {
+        console.error('Error: Data could not be fetched', error);
+      }
+    };
 
-const MenuItem = () => {
+    fetchItem();
+  }, [id]);
+
   return (
     <div className="section">
       <div className="container menu-of-the-day">
         <h1 className="heading-secondary">
-          Yorum yapmak istediğiniz ürün ; 
+          Yorum yapmak istediğiniz ürün {id} ;
         </h1>
-        {menuData.map((data, i) => (
+        {selectedItem && (
           <ListItem
-            title={data.title}
-            description={data.description}
-            price={data.price}
-            itemImage={data.img}
+            title={selectedItem.itemName}
+            description={selectedItem.itemDefinition}
+            price={selectedItem.itemPrice}
+            itemImage={selectedItem.itemPicName}
           />
-        ))}
+        )}
       </div>
     </div>
   );
