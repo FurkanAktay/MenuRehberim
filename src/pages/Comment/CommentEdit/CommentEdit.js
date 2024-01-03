@@ -2,150 +2,102 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 
-import "./CommentEdit.css";
-
-const MenuEditForm = () => {
-  const [user, setUser] = useState({
-    name: '',
-    surName: '',
-    email: '',
-    userName: '',
-    password: '',
-    restourantName: '',
-    category: '',
-    placeAdress:'',
-    placeBgPicName: '',
-    placeDefinition: '',
-    restourantPassword: ''
+const MenuEditForm = ({ id }) => {
+  const [data, setData] = useState({
+    commentText: '',
+    score: 0,
+    itemId: parseInt(id)
   });
   const [error, setError] = useState(null);
 
-
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setUser({ ...user, [name]: value });
+    setData({ ...data, [name]: value });
   };
 
   const handleEditer = (event) => {
     event.preventDefault();
-   
-      // Kullanıcı kaydı
-      if (user.name && user.surName && user.userName && user.email && user.password) {
-        setError('');
-        axios.post('http://localhost:8081/api/user', user)
-          .then(response => {
-            if (response.data === true) {
-              console.error("Kullanıcı Kaydı Başarılı");
-              // Başarılı kayıt durumunda başka bir sayfaya yönlendirme yapılabilir.
-            } else {
-              console.error("Kullanıcı kaydı sırasında bir hata oluştu.");
-            }
-          }).catch(error => {
-            console.error("Kullanıcı kaydı sırasında bir hata oluştu.");
-          });
-      } else {
-        setError('Lütfen tüm alanları doldurun.');
-      }
+    const username = localStorage.getItem('username');
+
+    if (data.commentText) {
+      setError('');
+      axios.post(`http://localhost:8080/api/commentAdd/${username}`, data)
+        .then(response => {
+          if (response.data === true) {
+            console.error("Yorum Başarılı Bir şekilde Kaydedildi");
+          } else {
+            console.error("Yorum kaydı sırasında bir hata oluştu.");
+          }
+        }).catch(error => {
+          console.error("Yorum kaydı sırasında bir hata oluştu.");
+        });
+    } else {
+      setError('Lütfen tüm alanları doldurun.');
+    }
   };
 
+  const handleStarClick = (value) => {
+    setData({ ...data, score: value });
+  };
 
-    const TextInfo = () => {
-        return (
-          <div >
-            <div >
-                <p >
-                <br/>
-                  * Yorum yapmak istediğiniz ürün yukarı da görüntülemektedir. 
-                </p>
-            </div>
-          </div>
-         )
-        } 
+  const StarRating = () => {
+    const { score } = data;
 
-    const TextInfoSecond = () => {
-        return (
-          <div >
-            <div >
-                <p >
-                <br/>
-                  * Puanlamak zorunlu değildir. 
-                </p>
-            </div>
-          </div>
-         )
-        } 
-
-        const StarRating = () => {
-            const [rating, setRating] = useState(0);
-          
-            const handleStarClick = (value) => {
-                if (value === rating) {
-                  setRating(0);
-                } else {
-                  setRating(value);
-                }
-              };
-          
-            return (
-              <div>
-                {[1, 2, 3, 4, 5].map((value) => (
-                  <span
-                    key={value}
-                    style={{ cursor: 'pointer', fontSize: '24px' }}
-                    onClick={() => handleStarClick(value)}
-                  >
-                    {value <= rating ? '★' : '☆'}
-                  </span>
-                ))}
-                
-              </div>
-            );
-          }
+    return (
+      <div>
+        {[1, 2, 3, 4, 5].map((value) => (
+          <span
+            key={value}
+            style={{ cursor: 'pointer', fontSize: '24px' }}
+            onClick={() => handleStarClick(value)}
+          >
+            {value <= score ? '★' : '☆'}
+          </span>
+        ))}
+      </div>
+    );
+  };
 
   return (
     <Container>
-      
       <FormCategory onSubmit={handleEditer}>
-        { (
-          <>
-          <TextInfoC>
-            <TextInfo/>  
-          </TextInfoC>
-            <InputContainer>
-                <InputLabel>Yorumunuz :</InputLabel>
-                <Input
-                 type="text"
-                 name='commentContent'
-                 placeholder="Yorumunuz"
-                value={user.name}
-                onChange={handleInputChange}
-                />
-            </InputContainer>
-            <InputContainer>
-                <InputLabel>Puanınız :</InputLabel>
-                <StarRating/>
-                {/* <Input
-                 type="score"
-                 name='commentScore'
-                 placeholder="Puanınız"
-                value={user.name}
-                onChange={handleInputChange}
-                /> */}
-            </InputContainer>
-            
-            <TextInfoC>
-            <TextInfoSecond/>  
-          </TextInfoC>
-          </>
-        )}
-        <Button type='submit'>{ 'Yorum Yap'}</Button>
+        <TextInfoC>
+          <div>
+            <p>
+              <br />
+              * Yorum yapmak istediğiniz ürün yukarıda görüntülenmektedir.
+            </p>
+          </div>
+        </TextInfoC>
+        <InputContainer>
+          <InputLabel>Yorumunuz :</InputLabel>
+          <Input
+            type="text"
+            name='commentText'
+            placeholder="Yorumunuz"
+            value={data.commentText}
+            onChange={handleInputChange}
+          />
+        </InputContainer>
+        <InputContainer>
+          <InputLabel>Puanınız :</InputLabel>
+          <StarRating />
+        </InputContainer>
+        <TextInfoC>
+          <div>
+            <p>
+              <br />
+              * Puanlamak zorunlu değildir.
+            </p>
+          </div>
+        </TextInfoC>
+        <Button type='submit'>{'Yorum Yap'}</Button>
       </FormCategory>
       {error && <Error>{error}</Error>}
-    
     </Container>
-    
   );
 };
+
 
 const Container = styled.div`
   display: flex;

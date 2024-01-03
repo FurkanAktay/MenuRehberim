@@ -47,8 +47,10 @@ const LoginForm = () => {
       })
       .then(response => {
         if (response.data === 'Giriş başarılı!') {
+          localStorage.setItem('username', user.userName);
+
           console.log('Kullanıcı girişi başarılı!');
-          navigate('/', { state: { username: user.userName } }); // Kullanıcı adını ana sayfaya taşıyarak yönlendir
+          navigate('/'); // Kullanıcı adını ana sayfaya taşıyarak yönlendir
         } else {
           setError('Kullanıcı adı veya şifre hatalı.');
         }
