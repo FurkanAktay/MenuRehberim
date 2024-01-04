@@ -1,43 +1,55 @@
-import React, { useState } from 'react';
 import styled from 'styled-components';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+
 
 import "./CommentList.css";
+import { format } from 'date-fns';
+
 
 
 
 const CommentListShow = ({ comments }) => {
   return (
     <div>
-    <ul style={commentStyle}>
+      <ul style={commentStyle}>
         <h1 style={headerPrimary}>Ürün Yorumları</h1>
-      {comments.map((comment, index) => (
-        <li key={index} style={listItemStyle}>
-          <strong>{comment.username}:</strong> {comment.text}{' '}
-          <span style={{ fontSize: '0.8em', color: 'gray' }}>
-            ({new Date(comment.date).toLocaleString()})
-          </span>
-        </li>
-      ))}
-    </ul>
-  </div>
+        {comments.map((comment, index) => (
+          <li key={index} style={listItemStyle}>
+            <strong>{comment.userName}:</strong> {comment.commentText}{' '}
+            <span style={{ fontSize: '0.8em', color: 'gray' }}>
+              ({format(new Date(comment.commentDate), 'yyyy-MM-dd HH:mm:ss')})
+            </span>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 };
 
-const CommentList = () => {
-  const comments = [
-    {
-      username: 'kullanici1',
-      text: 'Bu ürün harika!',
-      date: '2023-12-20T12:00:00Z',
-    },
-    {
-      username: 'kullanici2',
-      text: 'Fiyat performans açısından çok iyi.',
-      date: '2023-12-19T15:30:00Z',
-    },
+const CommentList = (id) => {
+  const [comments, setComments] = useState([]);
+  const { id: routeId } = useParams(); // useParams ile id'yi al
 
-    
-  ];
+
+  useEffect(() => {
+    const fetchComments = async () => {
+      try {
+        const response = await fetch(`http://localhost:8080/api/commentList/${routeId}`); 
+        if (response.ok) {
+          const data = await response.json();
+          setComments(data);
+        } else {
+          throw new Error('Failed to fetch comments');
+        }
+      } catch (error) {
+        console.error('Error fetching comments:', error);
+      }
+    };
+
+    fetchComments();
+  }, [id]);
+
 
   return (
     <Container>

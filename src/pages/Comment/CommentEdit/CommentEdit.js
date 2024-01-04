@@ -6,7 +6,8 @@ const MenuEditForm = ({ id }) => {
   const [data, setData] = useState({
     commentText: '',
     score: 0,
-    itemId: parseInt(id)
+    itemId: parseInt(id),
+    commentDate: ''
   });
   const [error, setError] = useState(null);
 
@@ -19,9 +20,12 @@ const MenuEditForm = ({ id }) => {
     event.preventDefault();
     const username = localStorage.getItem('username');
 
+    const currentDate = new Date(); // Şu anki tarih ve saat
+    const formattedDate = currentDate.toISOString(); // ISO formatına çevirme
+
     if (data.commentText) {
       setError('');
-      axios.post(`http://localhost:8080/api/commentAdd/${username}`, data)
+      axios.post(`http://localhost:8080/api/commentAdd/${username}`, { ...data, commentDate: formattedDate })
         .then(response => {
           if (response.data === true) {
             console.error("Yorum Başarılı Bir şekilde Kaydedildi");
@@ -125,12 +129,12 @@ const FormCategory = styled.form`
 `;
 
 const Input = styled.input` 
-padding: 12px;
-margin-bottom: 16px;
-border-radius: 4px;
-border: 1px solid #ccc;
-width: 70%;
-font-size: 16px;
+  padding: 12px;
+  margin-bottom: 16px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  width: 70%;
+  font-size: 16px;
 `;
 
 const Button = styled.button`
@@ -153,24 +157,22 @@ const Error = styled.p`
 `;
 
 const TextInfoC = styled.div`
-padding-bottom: 24px;
-border-radius: 4px;
-border: none;
-transition: background-color 0.3s ease;
-
+  padding-bottom: 24px;
+  border-radius: 4px;
+  border: none;
+  transition: background-color 0.3s ease;
 `;
 
 const InputLabel = styled.span`
-padding: 12px;
-margin-bottom: 16px;
-border-radius: 4px;
-width: 30%;
+  padding: 12px;
+  margin-bottom: 16px;
+  border-radius: 4px;
+  width: 30%;
 `;
 
 const InputContainer = styled.div`
   display: flex;
   align-items: left;
-
   width: 100%;
 `;
 
