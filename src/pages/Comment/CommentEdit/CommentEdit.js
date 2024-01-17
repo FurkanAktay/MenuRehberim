@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
+import { ToastContainer,toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const MenuEditForm = ({ id }) => {
   const [data, setData] = useState({
@@ -16,36 +18,47 @@ const MenuEditForm = ({ id }) => {
     setData({ ...data, [name]: value });
   };
 
-  const handleEditer = (event) => {
+  const handleEditer = async (event) => {
     event.preventDefault();
     const username = localStorage.getItem('username');
-
-    const currentDate = new Date(); // Şu anki tarih ve saat
-    const formattedDate = currentDate.toISOString(); // ISO formatına çevirme
-
+  
+    const currentDate = new Date();
+    const formattedDate = currentDate.toISOString();
+  
     if (data.commentText) {
       setError('');
-      axios.post(`http://localhost:8080/api/commentAdd/${username}`, { ...data, commentDate: formattedDate })
-        .then(response => {
-          if (response.data === true) {
-            console.error("Yorum Başarılı Bir şekilde Kaydedildi");
-          } else {
-            console.error("Yorum kaydı sırasında bir hata oluştu.");
-          }
-        }).catch(error => {
+      try {
+        const response = await axios.post(`http://localhost:8080/api/commentAdd/${username}`, { ...data, commentDate: formattedDate });
+  
+        if (response.status === 200) {
+          console.log("Yorum Başarılı Bir şekilde Kaydedildi");
+          toast.success('Restoranınız başarıyla tanımlandı!', {
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: 3000,
+            
+          })
+          window.location.reload();
+
+
+
+          
+        } else {
           console.error("Yorum kaydı sırasında bir hata oluştu.");
-        });
+        }
+      } catch (error) {
+        console.error("Yorum kaydı sırasında bir hata oluştu.", error);
+      }
     } else {
       setError('Lütfen tüm alanları doldurun.');
     }
   };
-
   const handleStarClick = (value) => {
     setData({ ...data, score: value });
   };
 
   const StarRating = () => {
     const { score } = data;
+
 
     return (
       <div>
@@ -61,6 +74,7 @@ const MenuEditForm = ({ id }) => {
       </div>
     );
   };
+
 
   return (
     <Container>
@@ -98,6 +112,7 @@ const MenuEditForm = ({ id }) => {
         <Button type='submit'>{'Yorum Yap'}</Button>
       </FormCategory>
       {error && <Error>{error}</Error>}
+      
     </Container>
   );
 };

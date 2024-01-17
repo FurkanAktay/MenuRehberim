@@ -30,7 +30,7 @@ const MenuItem = ({ id }) => {
     <div className="section">
       <div className="container menu-of-the-day">
         <h1 className="heading-secondary">
-          Yorum yapmak istediğiniz ürün {id} ;
+          Yorum yapmak istediğiniz ürün ;
         </h1>
         {selectedItem && (
           <ListItem

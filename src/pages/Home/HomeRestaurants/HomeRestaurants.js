@@ -34,15 +34,22 @@ const AmazingMeal = () => {
     }
   });
 
-  return (
+  return(
     <div className="section">
       <div className="container">
         {/* Diğer bileşenler */}
         <PillsExample onSelectCategory={handleCategorySelect} />
-        
+
         <div className="amazing-card-container">
           {filteredPlaces.map((place, index) => (
-            <Link to={`/menu/${place.id}`} key={place.id} className={`amazing-card amazing-card-${index % 2 === 0 ? 'left' : 'right'}`}>
+            <Link
+              to={{
+                pathname: `/menu/${place.id}`,
+                state: { restourantName: place.restourantName }
+              }}
+              key={place.id}
+              className={`amazing-card amazing-card-${index % 2 === 0 ? 'left' : 'right'}`}
+            >
               {/* Restoran içeriği */}
               <div className="amazing-card-content">
                 <div className="amazing-card-title">
@@ -51,13 +58,17 @@ const AmazingMeal = () => {
                     <span>{place.restourantName}</span>
                   </h3>
                 </div>
+
                 <img
+                  style={{ width: '300px', height: '200px', marginBottom: '10px' }}
                   src={`data:image/jpeg;base64,${place.placeBgPicName}`}
                   alt="Place Image"
                 />
-                <p>{place.placeDefinition}</p>
-                <p>{place.placeAdress}</p>
-                <p>{place.category}</p>
+                <div className="amazing-card-info">
+                  <p>{place.placeDefinition}</p>
+                  <p>{place.placeAdress}</p>
+                  <p>{place.category}</p>
+                </div>
               </div>
             </Link>
           ))}
@@ -65,6 +76,7 @@ const AmazingMeal = () => {
       </div>
     </div>
   );
+  
 };
 
 export default AmazingMeal;

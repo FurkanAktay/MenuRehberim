@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
 
 const RegisterForm = () => {
   const [isRestoranRegister, setIsRestoranRegister] = useState(false);
@@ -12,11 +15,12 @@ const RegisterForm = () => {
     password: '',
     restourantName: '',
     category: '',
-    placeAdress:'',
+    placeAdress: '',
     placeBgPicName: '',
     placeDefinition: '',
     restourantPassword: ''
   });
+  const navigate = useNavigate();
   const [error, setError] = useState(null);
 
   const toggleRegisterType = () => {
@@ -30,15 +34,23 @@ const RegisterForm = () => {
 
   const handleRegister = (event) => {
     event.preventDefault();
+
     if (!isRestoranRegister) {
-      // Kullanıcı kaydı
+      // User registration
       if (user.name && user.surName && user.userName && user.email && user.password) {
         setError('');
         axios.post('http://localhost:8080/api/user', user)
           .then(response => {
-            if (response.data === true) {
-              console.error("Kullanıcı Kaydı Başarılı");
-              // Başarılı kayıt durumunda başka bir sayfaya yönlendirme yapılabilir.
+            if (response.status === 200) {
+              console.log("Kullanıcı Kaydı Başarılı");
+              // Show success toast
+              toast.success('Kullanıcı Kaydı Başarılı!', {
+                position: toast.POSITION.TOP_CENTER,
+                autoClose: 2000,
+                
+              });
+              navigate('/Login');
+
             } else {
               console.error("Kullanıcı kaydı sırasında bir hata oluştu.");
             }
@@ -48,15 +60,22 @@ const RegisterForm = () => {
       } else {
         setError('Lütfen tüm alanları doldurun.');
       }
+
     } else {
-      // Restoran kaydı
-      if (user.name && user.surName &&user.userName &&  user.email&&user.password) {
+      // Restaurant registration
+      if (user.name && user.surName && user.userName && user.email && user.password) {
         setError('');
         axios.post('http://localhost:8080/api/restourantAdd', user)
           .then(response => {
-            if (response.data === true) {
-              console.error("Restoran Kaydı Başarılı");
-              // Başarılı kayıt durumunda başka bir sayfaya yönlendirme yapılabilir.
+            if (response.status === 200) {
+              console.error('Kayıt tamam');
+              // Show success toast
+              toast.success('Restoran Kaydı Başarılı! Giriş Sayfasına Yönlendiriliyorsunuz.', {
+                position: toast.POSITION.TOP_CENTER,
+                autoClose: 2000,
+              });
+
+              navigate('/Login');
             } else {
               console.error("Restoran kaydı sırasında bir hata oluştu.");
             }
@@ -83,11 +102,10 @@ const RegisterForm = () => {
       <Form onSubmit={handleRegister}>
         {isRestoranRegister ? (
           <>
-          
             <Input
               type="text"
               name='name'
-              placeholder="name"
+              placeholder="Ad"
               value={user.name}
               onChange={handleInputChange}
             />
@@ -162,6 +180,7 @@ const RegisterForm = () => {
         <Button type='submit'>{isRestoranRegister ? 'Restoran Kaydı Oluştur' : 'Kullanıcı Kaydı Oluştur'}</Button>
       </Form>
       {error && <Error>{error}</Error>}
+      <ToastContainer />
     </Container>
   );
 };

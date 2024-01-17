@@ -6,20 +6,27 @@ import Breakfast from './Breakfast/Breakfast'
 import LunchTime from "./LunchTime/LunchTime";
 import CoffeeSelection from './CoffeeSelection/CoffeeSelection'
 import Beverages from './Beverages/Beverages'
-import { useParams } from 'react-router-dom';
+import { useParams,useLocation} from 'react-router-dom';
 
 
 import AddToCart from './AddToCart/AddToCart'
 
 const Menu = () => {
   const { id } = useParams();
+  const currentLocation = useLocation();
+
+  const restourantName = currentLocation.state ? currentLocation.state.restourantName : null;
+  console.log({restourantName})
+
+  const headingText = restourantName ? `${restourantName}'s Menu` : "Our Menu";
 
   return (
     <div>
 
       <HeroImage
         bgImage={bgImage}
-        heading={["Our ", <span>Menu</span>]}
+        heading={headingText}
+
         text="Everything we have to offer at one glance"
       />
   

@@ -42,8 +42,12 @@
     width: 300px;
     height: 200px;
     border-radius: 5px;
-}
+    object-fit: cover;
 
+}
+.amazing-card-info {
+    text-align: center; /* veya istediğiniz hizalama stilini belirleyebilirsiniz */
+  }
 .amazing-card-title {
     display: flex;
     align-items: center;
